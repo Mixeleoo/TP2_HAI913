@@ -1,6 +1,6 @@
 package hai913i.tp2;
 
-import java.io.IOException;
+import hai913i.tp2.FactsAdapter;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -90,26 +90,14 @@ public final class Main {
             return;
         }
 
-        Facts facts;
-        try {
-            if (prefix == null) {
-                prefix = Facts.discoverPrefix(dir);
-            }
-            facts = Facts.load(dir, prefix);
-        } catch (IOException e) {
-            ERR.println("Lecture des faits impossible : " + e.getMessage());
-            System.exit(2);
-            return;
-        }
+        FactsAdapter factsAdapter = new FactsAdapter(dir);
 
-        OUT.println("Dossier des faits   : " + dir.toAbsolutePath());
-        OUT.println("Jeu de données      : " + prefix);
         OUT.printf(Locale.ROOT, "Classes             : %d%n",
-                facts.classes().size());
+                factsAdapter.getClasses().size());
         OUT.printf(Locale.ROOT, "Méthodes            : %d%n",
-                facts.methodOwners().size());
+                factsAdapter.getMethods().size());
         OUT.printf(Locale.ROOT, "Arcs du graphe      : %d%n",
-                facts.calls().size());
+                factsAdapter.getCalls().size());
         OUT.printf(Locale.ROOT, "Seuil CP retenu     : %.4f%n", cp);
 
         // TODO étape A1 : écarter les arcs intra-classe, agréger les arcs
@@ -122,7 +110,6 @@ public final class Main {
         // TODO étape B3 : couper l'arbre sous les trois contraintes, puis
         //                 vérifier la contrainte M/2 et signaler sa violation.
         OUT.println();
-        OUT.println("Faits chargés. Les étapes A1 à B3 restent à écrire.");
     }
 
     /**
