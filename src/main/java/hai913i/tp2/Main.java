@@ -1,8 +1,9 @@
 package hai913i.tp2;
 
-import hai913i.tp2.FactsAdapter;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Locale;
 
@@ -29,7 +30,9 @@ import java.util.Locale;
  * {@code ...-classes.csv}, {@code ...-methods.csv} et {@code ...-calls.csv}.
  * Le préfixe en est déduit : votre outil n'a donc aucune raison de connaître le
  * nom du projet de validation, et il fonctionnera tel quel sur un autre jeu de
- * faits..</p>
+ * faits.. Si le dossier ne contient aucun {@code *-classes.csv}, il est traité
+ * comme un projet Java et ses faits sont extraits par le TP 1
+ * ({@link FactsAdapter}).</p>
  *
  * <p><b>Codes de sortie</b> : 0 si les faits sont chargés, 1 si les arguments
  * sont invalides, 2 si les fichiers sont illisibles. Gardez cette convention
@@ -90,14 +93,37 @@ public final class Main {
             return;
         }
 
-        FactsAdapter factsAdapter = new FactsAdapter(dir);
+        if (!Files.isDirectory(dir)) {
+            ERR.println("Erreur : dossier introuvable : " + dir.toAbsolutePath());
+            System.exit(2);
+            return;
+        }
 
+        FactsSource facts;
+        String origine;
+        try {
+            if (prefix != null || containsCsvFacts(dir)) {
+                facts = prefix != null ? new CsvFactsLoader(dir, prefix)
+                                       : new CsvFactsLoader(dir);
+                origine = "CSV " + (prefix != null ? prefix : Facts.discoverPrefix(dir));
+            } else {
+                facts = new FactsAdapter(dir);
+                origine = "sources Java (modèle du TP 1)";
+            }
+        } catch (IOException e) {
+            ERR.println("Erreur : " + e.getMessage());
+            System.exit(2);
+            return;
+        }
+
+        OUT.printf(Locale.ROOT, "Dossier des faits   : %s%n", dir);
+        OUT.printf(Locale.ROOT, "Origine des faits   : %s%n", origine);
         OUT.printf(Locale.ROOT, "Classes             : %d%n",
-                factsAdapter.getClasses().size());
+                facts.getClasses().size());
         OUT.printf(Locale.ROOT, "Méthodes            : %d%n",
-                factsAdapter.getMethods().size());
+                facts.getMethods().size());
         OUT.printf(Locale.ROOT, "Arcs du graphe      : %d%n",
-                factsAdapter.getCalls().size());
+                facts.getCalls().size());
         OUT.printf(Locale.ROOT, "Seuil CP retenu     : %.4f%n", cp);
 
         // TODO étape A1 : écarter les arcs intra-classe, agréger les arcs
@@ -110,6 +136,21 @@ public final class Main {
         // TODO étape B3 : couper l'arbre sous les trois contraintes, puis
         //                 vérifier la contrainte M/2 et signaler sa violation.
         OUT.println();
+    }
+
+    /**
+     * Choix du chemin d'entrée : un dossier qui contient un {@code *-classes.csv}
+     * est un jeu de faits au format canonique (chemin 2, ou facts-mini) ; sinon
+     * c'est un projet Java, analysé par le TP 1 (chemin 1).
+     *
+     * @param dir dossier passé en argument
+     * @return vrai si le dossier contient au moins un jeu de faits CSV
+     * @throws IOException si le dossier ne peut pas être listé
+     */
+    private static boolean containsCsvFacts(Path dir) throws IOException {
+        try (var entries = Files.list(dir)) {
+            return entries.anyMatch(p -> p.getFileName().toString().endsWith("-classes.csv"));
+        }
     }
 
     /**
@@ -126,7 +167,8 @@ public final class Main {
         ERR.println("  <dossier-des-faits>  dossier contenant les trois fichiers");
         ERR.println("                       <préfixe>-classes.csv,");
         ERR.println("                       <préfixe>-methods.csv et");
-        ERR.println("                       <préfixe>-calls.csv");
+        ERR.println("                       <préfixe>-calls.csv ;");
+        ERR.println("                       sinon, projet Java analysé par le TP 1");
         ERR.println("  --cp <valeur>        seuil de couplage interne moyen"
                 + " (défaut : " + CP_DEFAUT + ")");
         ERR.println("  --prefix <préfixe>   force le préfixe ; par défaut il est");
