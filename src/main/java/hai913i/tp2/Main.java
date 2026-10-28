@@ -129,6 +129,16 @@ public final class Main {
             return;
         }
 
+        // un dossier vide (ni CSV, ni .java) ou un CSV sans aucune ligne ne donne aucune classe :
+        // il n'y a rien à analyser, c'est une erreur et pas un projet vide
+        if (facts.getClasses().isEmpty()) {
+            ERR.println("Erreur : aucune classe trouvée dans " + dir.toAbsolutePath()
+                    + " ; lu comme : " + origine + " ; attendu : trois fichiers <préfixe>-*.csv"
+                    + " ou les sources d'un projet Java");
+            System.exit(2);
+            return;
+        }
+
         OUT.printf(Locale.ROOT, "Dossier des faits   : %s%n", dir);
         OUT.printf(Locale.ROOT, "Origine des faits   : %s%n", origine);
         OUT.printf(Locale.ROOT, "Classes             : %d%n",
