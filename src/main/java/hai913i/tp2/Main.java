@@ -1,5 +1,8 @@
 package hai913i.tp2;
 
+import hai913i.tp2.coupling.Coupling;
+import hai913i.tp2.output.CouplingPrint;
+
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
@@ -125,10 +128,19 @@ public final class Main {
         OUT.printf(Locale.ROOT, "Arcs du graphe      : %d%n",
                 facts.getCalls().size());
         OUT.printf(Locale.ROOT, "Seuil CP retenu     : %.4f%n", cp);
+        OUT.println();
 
-        // TODO étape A1 : écarter les arcs intra-classe, agréger les arcs
-        //                 restants par couple de classes distinctes, puis
-        //                 calculer C(A, B) = r(A, B) / |E_inter|.
+        // étape A1 : à partir d'ici, plus rien ne lit les arcs d'appel
+        Coupling coupling;
+        try {
+            coupling = Coupling.of(facts);
+        } catch (IllegalArgumentException e) {
+            ERR.println("Erreur : faits incohérents : " + e.getMessage());
+            System.exit(2);
+            return;
+        }
+        CouplingPrint.print(coupling, OUT);
+
         // TODO étape A2 : construire et exporter le graphe de couplage pondéré.
         // TODO étape B1 : regroupement hiérarchique ascendant, lien moyen,
         //                 égalités départagées comme le sujet l'impose.
