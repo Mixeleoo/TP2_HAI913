@@ -1,0 +1,40 @@
+// Graphe de couplage pondéré : poids = C(A, B) = r(A, B) / |E_inter|, |E_inter| = 37
+graph couplage {
+  layout=neato; overlap=false; splines=true; sep="+25";
+  node [shape=box, style=rounded, fontname="Helvetica", fontsize=11];
+  edge [len=2.2, fontname="Helvetica", fontsize=9];
+  "library.app.LibraryApp" [label="LibraryApp"];
+  "library.model.Book" [label="Book"];
+  "library.model.Category" [label="Category"];
+  "library.model.Dvd" [label="Dvd", style="rounded,dashed", fontcolor=gray40, color=gray40];
+  "library.model.Item" [label="Item"];
+  "library.model.Loanable" [label="Loanable"];
+  "library.model.Member" [label="Member"];
+  "library.service.Catalog" [label="Catalog"];
+  "library.service.ConsoleNotifier" [label="ConsoleNotifier"];
+  "library.service.LoanException" [label="LoanException", style="rounded,dashed", fontcolor=gray40, color=gray40];
+  "library.service.LoanService" [label="LoanService"];
+  "library.service.LoanService.Loan" [label="LoanService.Loan"];
+  "library.service.Notifier" [label="Notifier"];
+  "library.util.Statistics" [label="Statistics"];
+  "library.util.TextUtils" [label="TextUtils"];
+  "library.model.Item" -- "library.service.LoanService" [label="4/37\n0.1081", penwidth=4];
+  "library.service.LoanService" -- "library.service.LoanService.Loan" [label="4/37\n0.1081", penwidth=4];
+  "library.app.LibraryApp" -- "library.model.Item" [label="3/37\n0.0811", penwidth=3];
+  "library.app.LibraryApp" -- "library.service.Catalog" [label="3/37\n0.0811", penwidth=3];
+  "library.app.LibraryApp" -- "library.service.LoanService" [label="3/37\n0.0811", penwidth=3];
+  "library.app.LibraryApp" -- "library.service.LoanService.Loan" [label="2/37\n0.0541", penwidth=2];
+  "library.model.Item" -- "library.model.Member" [label="2/37\n0.0541", penwidth=2];
+  "library.model.Item" -- "library.service.Catalog" [label="2/37\n0.0541", penwidth=2];
+  "library.model.Member" -- "library.service.LoanService" [label="2/37\n0.0541", penwidth=2];
+  "library.service.LoanService" -- "library.service.Notifier" [label="2/37\n0.0541", penwidth=2];
+  "library.util.Statistics" -- "library.util.TextUtils" [label="2/37\n0.0541", penwidth=2];
+  "library.app.LibraryApp" -- "library.model.Book" [label="1/37\n0.0270", penwidth=1];
+  "library.app.LibraryApp" -- "library.util.Statistics" [label="1/37\n0.0270", penwidth=1];
+  "library.model.Book" -- "library.model.Item" [label="1/37\n0.0270", penwidth=1];
+  "library.model.Category" -- "library.model.Item" [label="1/37\n0.0270", penwidth=1];
+  "library.model.Loanable" -- "library.service.LoanService" [label="1/37\n0.0270", penwidth=1];
+  "library.model.Member" -- "library.service.ConsoleNotifier" [label="1/37\n0.0270", penwidth=1];
+  "library.service.Catalog" -- "library.service.LoanService" [label="1/37\n0.0270", penwidth=1];
+  "library.service.LoanService" -- "library.util.TextUtils" [label="1/37\n0.0270", penwidth=1];
+}
