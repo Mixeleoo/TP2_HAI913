@@ -1,0 +1,28 @@
+=== B3 : modules ===
+Seuil CP              : 0.0250
+Modules               : 7 (au plus M/2 = 7)
+Contrainte M/2        : respectée
+
+  Module 1  [18]  2 classe(s)  C(G) = 0.0541
+      library.util.Statistics
+      library.util.TextUtils
+  Module 2  [5]  1 classe(s)  C(G) = -
+      library.model.Loanable
+  Module 3  [2]  1 classe(s)  C(G) = -
+      library.model.Category
+  Module 4  [20]  2 classe(s)  C(G) = 0.0270
+      library.model.Member
+      library.service.ConsoleNotifier
+  Module 5  [22]  7 classe(s)  C(G) = 0.0335
+      library.app.LibraryApp
+      library.model.Book
+      library.model.Item
+      library.service.Catalog
+      library.service.LoanService
+      library.service.LoanService.Loan
+      library.service.Notifier
+  Module 6  [3]  1 classe(s)  C(G) = -
+      library.model.Dvd
+  Module 7  [9]  1 classe(s)  C(G) = -
+      library.service.LoanException
+

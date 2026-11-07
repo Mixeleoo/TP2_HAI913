@@ -1,0 +1,46 @@
+# fusions : etape;similarite;groupeA;groupeB;nouveau
+1;0.1081;{Item};{LoanService};15
+2;0.0811;{LibraryApp};{Catalog};16
+3;0.0608;{Item, LoanService};{LibraryApp, Catalog};17
+4;0.0541;{Statistics};{TextUtils};18
+5;0.0405;{LoanService.Loan};{LibraryApp, Item, Catalog, LoanService};19
+6;0.0270;{Member};{ConsoleNotifier};20
+7;0.0108;{Book};{LibraryApp, Item, Catalog, LoanService, LoanService.Loan};21
+8;0.0090;{Notifier};{LibraryApp, Book, Item, Catalog, LoanService, LoanService.Loan};22
+9;0.0077;{Member, ConsoleNotifier};{LibraryApp, Book, Item, Catalog, LoanService, LoanService.Loan, Notifier};23
+10;0.0030;{Category};{LibraryApp, Book, Item, Member, Catalog, ConsoleNotifier, LoanService, LoanService.Loan, Notifier};24
+11;0.0027;{Loanable};{LibraryApp, Book, Category, Item, Member, Catalog, ConsoleNotifier, LoanService, LoanService.Loan, Notifier};25
+12;0.0025;{Statistics, TextUtils};{LibraryApp, Book, Category, Item, Loanable, Member, Catalog, ConsoleNotifier, LoanService, LoanService.Loan, Notifier};26
+13;0.0000;{Dvd};{LoanException};27
+14;0.0000;{LibraryApp, Book, Category, Item, Loanable, Member, Catalog, ConsoleNotifier, LoanService, LoanService.Loan, Notifier, Statistics, TextUtils};{Dvd, LoanException};28
+
+# arbre
+[28] 0.0000 {LibraryApp, Book, Category, Dvd, Item, Loanable, Member, Catalog, ConsoleNotifier, LoanException, LoanService, LoanService.Loan, Notifier, Statistics, TextUtils}
+  [26] 0.0025 {LibraryApp, Book, Category, Item, Loanable, Member, Catalog, ConsoleNotifier, LoanService, LoanService.Loan, Notifier, Statistics, TextUtils}
+    [18] 0.0541 {Statistics, TextUtils}
+      [13] library.util.Statistics
+      [14] library.util.TextUtils
+    [25] 0.0027 {LibraryApp, Book, Category, Item, Loanable, Member, Catalog, ConsoleNotifier, LoanService, LoanService.Loan, Notifier}
+      [5] library.model.Loanable
+      [24] 0.0030 {LibraryApp, Book, Category, Item, Member, Catalog, ConsoleNotifier, LoanService, LoanService.Loan, Notifier}
+        [2] library.model.Category
+        [23] 0.0077 {LibraryApp, Book, Item, Member, Catalog, ConsoleNotifier, LoanService, LoanService.Loan, Notifier}
+          [20] 0.0270 {Member, ConsoleNotifier}
+            [6] library.model.Member
+            [8] library.service.ConsoleNotifier
+          [22] 0.0090 {LibraryApp, Book, Item, Catalog, LoanService, LoanService.Loan, Notifier}
+            [12] library.service.Notifier
+            [21] 0.0108 {LibraryApp, Book, Item, Catalog, LoanService, LoanService.Loan}
+              [1] library.model.Book
+              [19] 0.0405 {LibraryApp, Item, Catalog, LoanService, LoanService.Loan}
+                [11] library.service.LoanService.Loan
+                [17] 0.0608 {LibraryApp, Item, Catalog, LoanService}
+                  [15] 0.1081 {Item, LoanService}
+                    [4] library.model.Item
+                    [10] library.service.LoanService
+                  [16] 0.0811 {LibraryApp, Catalog}
+                    [0] library.app.LibraryApp
+                    [7] library.service.Catalog
+  [27] 0.0000 {Dvd, LoanException}
+    [3] library.model.Dvd
+    [9] library.service.LoanException

@@ -1,8 +1,13 @@
 package hai913i.tp2;
 
+import hai913i.tp2.clustering.Clustering;
 import hai913i.tp2.coupling.Coupling;
 import hai913i.tp2.graph.CouplingGraph;
+import hai913i.tp2.clustering.Cut;
+import hai913i.tp2.output.ClusteringPrint;
 import hai913i.tp2.output.CouplingPrint;
+import hai913i.tp2.output.CutPrint;
+import hai913i.tp2.output.DendrogramExport;
 import hai913i.tp2.output.GraphExport;
 import hai913i.tp2.output.GraphPrint;
 
@@ -101,7 +106,7 @@ public final class Main {
                 return;
             }
         }
-        if (cp < 0.0) {
+        if (!(cp >= 0.0) || Double.isInfinite(cp)) {
             usage("--cp doit être positif ou nul");
             return;
         }
@@ -183,11 +188,36 @@ public final class Main {
             return;
         }
 
-        // TODO étape B1 : regroupement hiérarchique ascendant, lien moyen,
-        //                 égalités départagées comme le sujet l'impose.
-        // TODO étape B2 : représenter et exporter le dendrogramme.
-        // TODO étape B3 : couper l'arbre sous les trois contraintes, puis
-        //                 vérifier la contrainte M/2 et signaler sa violation.
+        OUT.println();
+        Clustering clustering = Clustering.run(coupling.classes(), coupling::coupling);
+        ClusteringPrint.print(clustering, OUT);
+
+        Path dendroTxt = outDir.resolve("dendrogramme.txt");
+        Path dendroDot = outDir.resolve("dendrogramme.dot");
+        try {
+            DendrogramExport.writeText(clustering, dendroTxt);
+            DendrogramExport.writeDot(clustering, dendroDot);
+        } catch (IOException e) {
+            ERR.println("Erreur : export du dendrogramme impossible : " + e.getMessage());
+            System.exit(2);
+            return;
+        }
+        OUT.println("=== B2 : dendrogramme ===");
+        OUT.printf(Locale.ROOT, "Export texte          : %s%n", dendroTxt);
+        OUT.printf(Locale.ROOT, "Export DOT            : %s%n", dendroDot);
+        OUT.println();
+
+        Cut cut = Cut.of(clustering, coupling::coupling, cp);
+        CutPrint.print(cut, clustering, OUT);
+        Path modulesTxt = outDir.resolve(String.format(Locale.ROOT, "modules-cp-%.4f.txt", cp));
+        try {
+            CutPrint.write(cut, clustering, modulesTxt);
+        } catch (IOException e) {
+            ERR.println("Erreur : export des modules impossible : " + e.getMessage());
+            System.exit(2);
+            return;
+        }
+        OUT.printf(Locale.ROOT, "Export des modules    : %s%n", modulesTxt);
         OUT.println();
     }
 
