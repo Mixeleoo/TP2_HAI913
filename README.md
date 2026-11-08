@@ -5,8 +5,6 @@ Outil en ligne de commande qui part des **faits extraits au TP 1** (classes, mé
 Université de Montpellier — Faculté des Sciences · HAI913I Évolution et restructuration des logiciels · 2026–2027
 Wissam El Hage, Léo Faucon
 
-> **État actuel** : partie A (A0 → A2) terminée. Le regroupement, le dendrogramme et la coupe (partie B) ne sont pas encore implémentés ; l'option `--cp` est déjà lue et vérifiée mais ne sert qu'à partir de B3.
-
 ## Sommaire
 
 - [Projet](#projet)
