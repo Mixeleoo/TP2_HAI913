@@ -5,8 +5,6 @@ Outil en ligne de commande qui part des **faits extraits au TP 1** (classes, mé
 Université de Montpellier — Faculté des Sciences · HAI913I Évolution et restructuration des logiciels · 2026–2027
 Wissam El Hage, Léo Faucon
 
-> **État actuel** : parties A (A0 → A2) et B (B1 → B3) terminées. La partie C (bonus) n'est pas faite.
-
 ## Sommaire
 
 - [Projet](#projet)
